@@ -43,10 +43,11 @@ public class CityRepository {
     }
 
     public City findById(Integer cityId) {
-        String query = "SELECT c.id, c.countryId, c.name FROM city as c WHERE c.id = " + cityId;
+        String query = "SELECT c.id, c.countryId, c.name FROM city as c WHERE c.id = ?";
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, cityId);
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt(1);
                 int countryId = rs.getInt(2);
@@ -61,10 +62,11 @@ public class CityRepository {
     }
 
     public List<City> findByName(String name) {
-        String query = "SELECT c.id, c.countryId, c.name FROM city as c WHERE c.name like '" + name + "'";
+        String query = "SELECT c.id, c.countryId, c.name FROM city as c WHERE c.name like ?";
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, name);
+            ResultSet rs = statement.executeQuery();
             List<City> cityList = new ArrayList<>();
             while (rs.next()) {
                 int id = rs.getInt(1);
@@ -82,13 +84,14 @@ public class CityRepository {
     }
 
     public long create(City city) {
-        String query = "INSERT INTO city(countryid, name) VALUES(?, '" + city.getName() + "')";
+        String query = "INSERT INTO city(countryid, name) VALUES(?, ?)";
         long id = -1;
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         ) {
             statement.setInt(1, city.getCountryId());
+            statement.setString(2, city.getName());
             int rows = statement.executeUpdate();
 
             if (rows == 0) {
