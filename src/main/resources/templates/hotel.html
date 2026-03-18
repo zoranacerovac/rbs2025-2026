@@ -45,17 +45,23 @@
                 <b><label th:text="${userRating}"></label></b>
             </div>
             <div class="form-group">
-                <input type="radio" id="1" name="rating" value="1">
+                <input type="radio" id="1" name="rating" value="1"
+                       th:disabled="${not #authorization.expression('hasAuthority(''RATE_HOTEL'')')}">
                 <label for="1">1</label>
-                <input type="radio" id="2" name="rating" value="2">
+                <input type="radio" id="2" name="rating" value="2"
+                       th:disabled="${not #authorization.expression('hasAuthority(''RATE_HOTEL'')')}">
                 <label for="2">2</label>
-                <input type="radio" id="3" name="rating" value="3">
+                <input type="radio" id="3" name="rating" value="3"
+                       th:disabled="${not #authorization.expression('hasAuthority(''RATE_HOTEL'')')}">
                 <label for="3">3</label>
-                <input type="radio" id="4" name="rating" value="4">
+                <input type="radio" id="4" name="rating" value="4"
+                       th:disabled="${not #authorization.expression('hasAuthority(''RATE_HOTEL'')')}">
                 <label for="4">4</label>
-                <input type="radio" id="5" name="rating" value="5">
+                <input type="radio" id="5" name="rating" value="5"
+                       th:disabled="${not #authorization.expression('hasAuthority(''RATE_HOTEL'')')}">
                 <label for="5">5</label>
-                <button id="rateHotel" class="btn btn-primary mt-2">Rate</button>
+                <button id="rateHotel" class="btn btn-primary mt-2"
+                        th:disabled="${not #authorization.expression('hasAuthority(''RATE_HOTEL'')')}">Rate</button>
             </div>
         </form>
     </div>
